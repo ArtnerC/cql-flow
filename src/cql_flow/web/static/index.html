@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELM Flow - CQL to ELM Converter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 1.1em;
+        }
+
+        .main-content {
+            display: flex;
+            min-height: 600px;
+        }
+
+        .left-panel,
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .left-panel {
+            border-right: 1px solid #e0e0e0;
+        }
+
+        .panel-header {
+            background: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-header h3 {
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor {
+            flex: 1;
+            border: none;
+            padding: 15px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: none;
+            outline: none;
+        }
+
+        #cqlEditor {
+            background: #f8f9fa;
+        }
+
+        #elmOutput {
+            background: #2d3748;
+            color: #e2e8f0;
+        }
+
+        .status-bar {
+            background: #34495e;
+            color: white;
+            padding: 10px 15px;
+            font-size: 0.9em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-success {
+            background: #27ae60;
+        }
+
+        .status-error {
+            background: #e74c3c;
+        }
+
+        .status-warning {
+            background: #f39c12;
+        }
+
+        .status-processing {
+            background: #3498db;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .file-upload {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .error-panel {
+            background: #fdf2f2;
+            border: 1px solid #fdb8b8;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            display: none;
+        }
+
+        .error-panel.show {
+            display: block;
+        }
+
+        .error-title {
+            color: #c53030;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .error-list {
+            color: #742a2a;
+            font-size: 0.9em;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .warning-panel {
+            background: #fffbea;
+            border: 1px solid #f6d55c;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            display: none;
+        }
+
+        .warning-panel.show {
+            display: block;
+        }
+
+        .warning-title {
+            color: #b45309;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .warning-list {
+            color: #92400e;
+            font-size: 0.9em;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .left-panel {
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            .controls {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ELM Flow</h1>
+            <p>Convert Clinical Quality Language (CQL) to Expression Logical Model (ELM)</p>
+        </div>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="panel-header">
+                    <h3>CQL Input</h3>
+                    <div class="controls">
+                        <div class="file-upload">
+                            <input type="file" id="fileInput" class="file-input" accept=".cql" />
+                            <button class="btn btn-secondary" onclick="document.getElementById('fileInput').click()">
+                                📁 Load File
+                            </button>
+                        </div>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="optimizeCheck" />
+                            <label for="optimizeCheck">Optimize</label>
+                        </div>
+                        <button class="btn btn-warning" id="validateBtn">🔍 Validate</button>
+                        <button class="btn btn-primary" id="convertBtn">🔄 Convert</button>
+                    </div>
+                </div>
+
+                <div class="error-panel" id="errorPanel">
+                    <div class="error-title">Validation Errors:</div>
+                    <div class="error-list" id="errorList"></div>
+                </div>
+
+                <div class="warning-panel" id="warningPanel">
+                    <div class="warning-title">Warnings:</div>
+                    <div class="warning-list" id="warningList"></div>
+                </div>
+
+                <div class="editor-container">
+                    <textarea id="cqlEditor" class="editor" placeholder="Enter your CQL library code here...
+
+Example:
+library ExampleLibrary version '1.0.0'
+
+using FHIR version '4.0.1'
+
+define &quot;Test Condition&quot;:
+    true"></textarea>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="panel-header">
+                    <h3>ELM Output</h3>
+                    <div class="controls">
+                        <button class="btn btn-success" id="downloadBtn" disabled>💾 Download JSON</button>
+                        <button class="btn btn-secondary" id="copyBtn" disabled>📋 Copy</button>
+                        <button class="btn btn-secondary" id="clearBtn">🗑️ Clear</button>
+                    </div>
+                </div>
+
+                <div class="editor-container">
+                    <textarea id="elmOutput" class="editor" readonly
+                        placeholder="ELM JSON output will appear here..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-indicator">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="statusText">Ready</span>
+            </div>
+            <div id="processingTime"></div>
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE = window.location.origin;
+
+        // DOM Elements
+        const cqlEditor = document.getElementById('cqlEditor');
+        const elmOutput = document.getElementById('elmOutput');
+        const validateBtn = document.getElementById('validateBtn');
+        const convertBtn = document.getElementById('convertBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const fileInput = document.getElementById('fileInput');
+        const optimizeCheck = document.getElementById('optimizeCheck');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const processingTime = document.getElementById('processingTime');
+        const errorPanel = document.getElementById('errorPanel');
+        const errorList = document.getElementById('errorList');
+        const warningPanel = document.getElementById('warningPanel');
+        const warningList = document.getElementById('warningList');
+
+        // WebSocket for real-time validation
+        let ws = null;
+
+        // State management
+        let lastConversionResult = null;
+
+        // Initialize WebSocket connection
+        function initWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws`;
+
+            try {
+                ws = new WebSocket(wsUrl);
+
+                ws.onopen = function (event) {
+                    console.log('WebSocket connected');
+                };
+
+                ws.onmessage = function (event) {
+                    const data = JSON.parse(event.data);
+                    handleWebSocketMessage(data);
+                };
+
+                ws.onclose = function (event) {
+                    console.log('WebSocket disconnected');
+                    // Attempt to reconnect after 3 seconds
+                    setTimeout(initWebSocket, 3000);
+                };
+
+                ws.onerror = function (error) {
+                    console.error('WebSocket error:', error);
+                };
+            } catch (error) {
+                console.error('Failed to create WebSocket:', error);
+            }
+        }
+
+        // Handle WebSocket messages
+        function handleWebSocketMessage(data) {
+            if (data.type === 'validation_result') {
+                showValidationResult(data);
+            } else if (data.type === 'error') {
+                setStatus('error', data.message);
+            }
+        }
+
+        // Debounced real-time validation
+        let validationTimeout;
+        function debounceValidation() {
+            clearTimeout(validationTimeout);
+            validationTimeout = setTimeout(() => {
+                if (ws && ws.readyState === WebSocket.OPEN && cqlEditor.value.trim()) {
+                    ws.send(JSON.stringify({
+                        cql_content: cqlEditor.value
+                    }));
+                }
+            }, 1000);
+        }
+
+        // Set status
+        function setStatus(type, message, time = null) {
+            statusDot.className = `status-dot status-${type}`;
+            statusText.textContent = message;
+            if (time) {
+                processingTime.textContent = `${time.toFixed(2)}ms`;
+            } else {
+                processingTime.textContent = '';
+            }
+        }
+
+        // Show validation result
+        function showValidationResult(result) {
+            if (result.success) {
+                errorPanel.classList.remove('show');
+                if (result.warnings && result.warnings.length > 0) {
+                    warningList.innerHTML = result.warnings.map(w => `<div>• ${escapeHtml(w)}</div>`).join('');
+                    warningPanel.classList.add('show');
+                } else {
+                    warningPanel.classList.remove('show');
+                }
+                setStatus('success', 'Valid CQL');
+            } else {
+                errorList.innerHTML = result.errors.map(e => `<div>• ${escapeHtml(e)}</div>`).join('');
+                errorPanel.classList.add('show');
+                setStatus('error', 'Invalid CQL');
+            }
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // API call wrapper
+        async function apiCall(endpoint, method = 'GET', data = null) {
+            const options = {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+
+            if (data) {
+                options.body = JSON.stringify(data);
+            }
+
+            const response = await fetch(`${API_BASE}${endpoint}`, options);
+            return response.json();
+        }
+
+        // Validate CQL
+        async function validateCQL() {
+            const cqlContent = cqlEditor.value.trim();
+            if (!cqlContent) {
+                setStatus('warning', 'No CQL content to validate');
+                return;
+            }
+
+            setStatus('processing', 'Validating...');
+            setLoading(true);
+
+            try {
+                const result = await apiCall('/validate', 'POST', {
+                    cql_content: cqlContent
+                });
+
+                showValidationResult(result);
+            } catch (error) {
+                setStatus('error', `Validation failed: ${error.message}`);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Convert CQL to ELM
+        async function convertCQL() {
+            const cqlContent = cqlEditor.value.trim();
+            if (!cqlContent) {
+                setStatus('warning', 'No CQL content to convert');
+                return;
+            }
+
+            setStatus('processing', 'Converting...');
+            setLoading(true);
+
+            const startTime = performance.now();
+
+            try {
+                const result = await apiCall('/convert', 'POST', {
+                    cql_content: cqlContent,
+                    optimize: optimizeCheck.checked
+                });
+
+                const endTime = performance.now();
+                const processingTimeMs = endTime - startTime;
+
+                if (result.success) {
+                    elmOutput.value = JSON.stringify(result.elm_json, null, 2);
+                    lastConversionResult = result;
+                    downloadBtn.disabled = false;
+                    copyBtn.disabled = false;
+                    setStatus('success', 'Conversion successful', processingTimeMs);
+
+                    // Show warnings if any
+                    if (result.warnings && result.warnings.length > 0) {
+                        warningList.innerHTML = result.warnings.map(w => `<div>• ${escapeHtml(w)}</div>`).join('');
+                        warningPanel.classList.add('show');
+                    } else {
+                        warningPanel.classList.remove('show');
+                    }
+                    errorPanel.classList.remove('show');
+                } else {
+                    elmOutput.value = '';
+                    downloadBtn.disabled = true;
+                    copyBtn.disabled = true;
+                    errorList.innerHTML = result.errors.map(e => `<div>• ${escapeHtml(e)}</div>`).join('');
+                    errorPanel.classList.add('show');
+                    setStatus('error', 'Conversion failed', processingTimeMs);
+                }
+            } catch (error) {
+                setStatus('error', `Conversion failed: ${error.message}`);
+                elmOutput.value = '';
+                downloadBtn.disabled = true;
+                copyBtn.disabled = true;
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Download ELM JSON
+        function downloadELM() {
+            if (!lastConversionResult || !lastConversionResult.elm_json) return;
+
+            const blob = new Blob([JSON.stringify(lastConversionResult.elm_json, null, 2)], {
+                type: 'application/json'
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'converted.elm.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Copy to clipboard
+        async function copyToClipboard() {
+            try {
+                await navigator.clipboard.writeText(elmOutput.value);
+                setStatus('success', 'Copied to clipboard');
+            } catch (error) {
+                // Fallback for older browsers
+                elmOutput.select();
+                document.execCommand('copy');
+                setStatus('success', 'Copied to clipboard');
+            }
+        }
+
+        // Clear all
+        function clearAll() {
+            cqlEditor.value = '';
+            elmOutput.value = '';
+            lastConversionResult = null;
+            downloadBtn.disabled = true;
+            copyBtn.disabled = true;
+            errorPanel.classList.remove('show');
+            warningPanel.classList.remove('show');
+            setStatus('success', 'Ready');
+        }
+
+        // Load file
+        function loadFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                cqlEditor.value = e.target.result;
+                setStatus('success', `Loaded ${file.name}`);
+                // Trigger validation after loading
+                debounceValidation();
+            };
+            reader.readAsText(file);
+        }
+
+        // Set loading state
+        function setLoading(loading) {
+            if (loading) {
+                document.querySelector('.container').classList.add('loading');
+            } else {
+                document.querySelector('.container').classList.remove('loading');
+            }
+        }
+
+        // Event listeners
+        validateBtn.addEventListener('click', validateCQL);
+        convertBtn.addEventListener('click', convertCQL);
+        downloadBtn.addEventListener('click', downloadELM);
+        copyBtn.addEventListener('click', copyToClipboard);
+        clearBtn.addEventListener('click', clearAll);
+        fileInput.addEventListener('change', loadFile);
+        cqlEditor.addEventListener('input', debounceValidation);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            initWebSocket();
+            setStatus('success', 'Ready');
+        });
+
+        // Handle page unload
+        window.addEventListener('beforeunload', function () {
+            if (ws) {
+                ws.close();
+            }
+        });
+    </script>
+</body>
+
+</html>

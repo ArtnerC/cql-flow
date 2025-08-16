@@ -1,0 +1,8 @@
+{
+  "simple_conversion_ms": 2.6997000004485017,
+  "medium_conversion_ms": 0.3147000006720191,
+  "large_conversion_ms": 1.316699999733828,
+  "sequential_batch_time_s": 0.006763500001397915,
+  "libraries_processed": 5,
+  "avg_time_per_library_ms": 1.352700000279583
+}

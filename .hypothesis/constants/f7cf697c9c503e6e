@@ -1,0 +1,4 @@
+# file: C:\Users\Artne\Dev\elm-flow\src\elm_flow\models\types\inference.py
+# hypothesis_version: 6.136.6
+
+['!=', '"', "'", '*', '+', '-', '.', '/', '<', '<=', '=', '>', '>=', 'Boolean', 'DateTime', 'Decimal', 'Integer', 'Interval<', 'List<', 'String', 'Time', 'add', 'and', 'concatenate', 'divide', 'equal', 'false', 'greater_than', 'length', 'less_than', 'multiply', 'not', 'not_equal', 'or', 'substring', 'subtract', 'true']

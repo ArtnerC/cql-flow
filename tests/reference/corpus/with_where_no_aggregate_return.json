@@ -1,0 +1,59 @@
+{
+    "library": {
+        "identifier": {
+            "id": "WithWhere",
+            "version": "1.0.0"
+        },
+        "schemaIdentifier": {
+            "id": "urn:hl7-org:elm",
+            "version": "1.5"
+        },
+        "usings": {
+            "def": [
+                {
+                    "localIdentifier": "Simple"
+                }
+            ]
+        },
+        "statements": {
+            "def": [
+                {
+                    "name": "Filtered",
+                    "context": "Patient",
+                    "expression": {
+                        "type": "Query",
+                        "source": [
+                            {
+                                "alias": "p"
+                            }
+                        ],
+                        "relationship": [
+                            {
+                                "type": "With"
+                            }
+                        ],
+                        "where": {
+                            "type": "Expression"
+                        },
+                        "return": {
+                            "expression": {
+                                "type": "Property",
+                                "path": "name"
+                            }
+                        },
+                        "sort": {
+                            "by": [
+                                {
+                                    "direction": "desc"
+                                },
+                                {
+                                    "direction": "asc"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

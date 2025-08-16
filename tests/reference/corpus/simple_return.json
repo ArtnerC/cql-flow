@@ -1,0 +1,48 @@
+{
+    "library": {
+        "identifier": {
+            "id": "SimpleReturn",
+            "version": "1.0.0"
+        },
+        "schemaIdentifier": {
+            "id": "urn:hl7-org:elm",
+            "version": "1.5"
+        },
+        "usings": {
+            "def": [
+                {
+                    "localIdentifier": "Simple"
+                }
+            ]
+        },
+        "statements": {
+            "def": [
+                {
+                    "name": "One",
+                    "context": "Patient",
+                    "expression": {
+                        "type": "Query",
+                        "source": [
+                            {
+                                "alias": "p"
+                            }
+                        ],
+                        "return": {
+                            "expression": {
+                                "type": "Property",
+                                "path": "id"
+                            }
+                        },
+                        "sort": {
+                            "by": [
+                                {
+                                    "direction": "asc"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,4 @@
+# file: C:\Users\Artne\Dev\elm-flow\src\elm_flow\generator\expression_converter.py
+# hypothesis_version: 6.137.1
+
+['As', 'Between', 'Boolean', 'CaseExpression', 'Code', 'Concept', 'DateTime', 'Decimal', 'Error', 'If', 'In', 'Indexer', 'InstanceExpression', 'Integer', 'Interval', 'List', 'Null', 'Quantity', 'QueryExpression', 'String', 'Time', 'TupleExpression', 'false', 'name', 'true']

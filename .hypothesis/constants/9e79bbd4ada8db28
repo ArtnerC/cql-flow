@@ -1,0 +1,4 @@
+# file: C:\Users\Artne\Dev\elm-flow\src\elm_flow\validator\rules\__init__.py
+# hypothesis_version: 6.136.6
+
+['RULE_EXECUTION_ERROR', 'error', 'hint', 'info', 'normal', 'permissive', 'strict', 'warning']

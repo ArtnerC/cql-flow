@@ -1,0 +1,56 @@
+{
+    "library": {
+        "identifier": {
+            "id": "AggXorReturn",
+            "version": "1.0.0"
+        },
+        "schemaIdentifier": {
+            "id": "urn:hl7-org:elm",
+            "version": "1.5"
+        },
+        "usings": {
+            "def": [
+                {
+                    "localIdentifier": "Simple"
+                }
+            ]
+        },
+        "statements": {
+            "def": [
+                {
+                    "name": "AggOnly",
+                    "context": "Patient",
+                    "expression": {
+                        "type": "Query",
+                        "source": [
+                            {
+                                "alias": "p"
+                            }
+                        ],
+                        "aggregate": {
+                            "type": "Aggregate"
+                        }
+                    }
+                },
+                {
+                    "name": "ReturnOnly",
+                    "context": "Patient",
+                    "expression": {
+                        "type": "Query",
+                        "source": [
+                            {
+                                "alias": "p"
+                            }
+                        ],
+                        "return": {
+                            "expression": {
+                                "type": "Property",
+                                "path": "id"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

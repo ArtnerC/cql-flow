@@ -1,0 +1,44 @@
+{
+    "library": {
+        "identifier": {
+            "id": "WhereOnly",
+            "version": "1.0.0"
+        },
+        "schemaIdentifier": {
+            "id": "urn:hl7-org:elm",
+            "version": "1.5"
+        },
+        "usings": {
+            "def": [
+                {
+                    "localIdentifier": "Simple"
+                }
+            ]
+        },
+        "statements": {
+            "def": [
+                {
+                    "name": "Filter",
+                    "context": "Patient",
+                    "expression": {
+                        "type": "Query",
+                        "source": [
+                            {
+                                "alias": "p"
+                            }
+                        ],
+                        "where": {
+                            "type": "Expression"
+                        },
+                        "return": {
+                            "expression": {
+                                "type": "Property",
+                                "path": "id"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

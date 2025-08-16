@@ -1,0 +1,4 @@
+# file: C:\Users\Artne\Dev\elm-flow\src\elm_flow\parsing\expression_parser.py
+# hypothesis_version: 6.137.1
+
+['\'"', ',', '.', '@', 'BOOLEAN', 'DateTime', 'ExpressionContext', 'FunctionContext', 'NULL', 'NUMBER', 'ParamListContext', 'STRING', 'Unknown', 'UnknownFunction', 'UnknownIdentifier', '__class__', 'and', 'end', 'exists', 'getChild', 'getChildCount', 'getSymbol', 'getText', 'identifier', 'name', 'not', 'of', 'or', 'start', 'symbol', 'true']

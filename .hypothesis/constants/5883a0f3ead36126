@@ -1,0 +1,4 @@
+# file: C:\Users\Artne\Dev\elm-flow\src\elm_flow\validator\rules\scope_rules.py
+# hypothesis_version: 6.136.6
+
+['ACCESS_MODIFIER', 'DUPLICATE_FUNCTION', 'DUPLICATE_PARAMETER', 'DUPLICATE_SYMBOL', 'FUNCTION_SCOPE_ERROR', 'INCLUDE_REFERENCE', 'PRIVATE_SYMBOL', 'SCOPE_VALIDATION', 'SYMBOL_RESOLUTION', '_', 'access_level', 'code', 'codesystem', 'expression', 'function', 'parameter', 'private', 'valueset']

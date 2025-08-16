@@ -1,0 +1,4 @@
+# file: C:\Users\Artne\Dev\elm-flow\src\elm_flow\parsing\parser.py
+# hypothesis_version: 6.137.1
+
+['"', "'", 'Unknown', 'expressionDefinition', 'functionDefinition', 'identifier', 'modelIdentifier', 'qualifiedIdentifier', 'r', 'start', 'utf-8', 'versionSpecifier']

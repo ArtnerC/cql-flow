@@ -1,0 +1,42 @@
+{
+  "timestamp": 1754500450.8999834,
+  "memory_stats": {
+    "gc_threshold": [
+      1000,
+      15,
+      15
+    ],
+    "gc_counts": [
+      450,
+      0,
+      4
+    ]
+  },
+  "benchmarks": {
+    "cache": {
+      "no_cache_time_ms": 0.04650000118999742,
+      "cache_time_ms": 2.609400000437745,
+      "improvement_percent": -5511.61276055849,
+      "cache_hit_rate": 0.99,
+      "cache_size": 5
+    },
+    "streaming": {
+      "streaming_time_ms": 16.318099998898106,
+      "traditional_time_ms": 0.6053999986761482,
+      "statements_found": 999,
+      "memory_efficient": true
+    },
+    "parallel": {
+      "sequential_time_ms": 14.892200000758749,
+      "parallel_time_ms": 8.426300000792253,
+      "speedup_factor": 1.7673474715306319,
+      "files_processed": 10
+    },
+    "memory": {
+      "optimized_time_ms": 13.609199999336852,
+      "unoptimized_time_ms": 3.0858999998599757,
+      "libraries_processed": 1000,
+      "memory_optimization_enabled": true
+    }
+  }
+}

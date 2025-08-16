@@ -1,0 +1,54 @@
+{
+    "library": {
+        "identifier": {
+            "id": "LetRetSort",
+            "version": "1.0.0"
+        },
+        "schemaIdentifier": {
+            "id": "urn:hl7-org:elm",
+            "version": "1.5"
+        },
+        "usings": {
+            "def": [
+                {
+                    "localIdentifier": "Simple"
+                }
+            ]
+        },
+        "statements": {
+            "def": [
+                {
+                    "name": "LRS",
+                    "context": "Patient",
+                    "expression": {
+                        "type": "Query",
+                        "source": [
+                            {
+                                "alias": "p"
+                            }
+                        ],
+                        "let": [
+                            {
+                                "name": "x"
+                            }
+                        ],
+                        "return": {
+                            "expression": {
+                                "type": "Literal",
+                                "valueType": "{urn:hl7-org:elm-types:r1}Integer",
+                                "value": "1"
+                            }
+                        },
+                        "sort": {
+                            "by": [
+                                {
+                                    "direction": "asc"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

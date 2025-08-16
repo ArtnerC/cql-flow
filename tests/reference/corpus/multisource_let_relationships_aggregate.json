@@ -1,0 +1,70 @@
+{
+    "library": {
+        "identifier": {
+            "id": "MultiAdvanced",
+            "version": "1.0.0"
+        },
+        "schemaIdentifier": {
+            "id": "urn:hl7-org:elm",
+            "version": "1.5"
+        },
+        "usings": {
+            "def": [
+                {
+                    "localIdentifier": "Simple"
+                }
+            ]
+        },
+        "statements": {
+            "def": [
+                {
+                    "name": "Complex",
+                    "context": "Patient",
+                    "expression": {
+                        "type": "Query",
+                        "source": [
+                            {
+                                "alias": "p"
+                            },
+                            {
+                                "alias": "e"
+                            }
+                        ],
+                        "let": [
+                            {
+                                "name": "a"
+                            },
+                            {
+                                "name": "b"
+                            },
+                            {
+                                "name": "c"
+                            }
+                        ],
+                        "relationship": [
+                            {
+                                "type": "With"
+                            },
+                            {
+                                "type": "Without"
+                            }
+                        ],
+                        "aggregate": {
+                            "type": "Aggregate"
+                        },
+                        "sort": {
+                            "by": [
+                                {
+                                    "direction": "asc"
+                                },
+                                {
+                                    "direction": "desc"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,121 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "format:check",
+			"type": "shell",
+			"command": "uv run ruff format --check .",
+			"group": "build"
+		},
+		{
+			"label": "lint:check",
+			"type": "shell",
+			"command": "uv run ruff check .",
+			"group": "build"
+		},
+		{
+			"label": "test:watch",
+			"type": "shell",
+			"command": "uv run ptw tests/",
+			"group": "test",
+			"isBackground": true
+		},
+		{
+			"label": "test:all",
+			"type": "shell",
+			"command": "uv run pytest tests --cov=src/cql_flow --cov-report=term-missing -v",
+			"group": "test"
+		},
+		{
+			"label": "test:coverage",
+			"type": "shell",
+			"command": "uv run pytest tests --cov=src/cql_flow",
+			"group": "test"
+		},
+		{
+			"label": "lint:fix",
+			"type": "shell",
+			"command": "uv run ruff check --fix .",
+			"group": "build"
+		},
+		{
+			"label": "format",
+			"type": "shell",
+			"command": "uv run ruff format .",
+			"group": "build"
+		},
+		{
+			"label": "typecheck",
+			"type": "shell",
+			"command": "uv run mypy src/cql_flow tests",
+			"group": "build"
+		},
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "uv build",
+			"group": "build"
+		},
+		{
+			"label": "dev:install",
+			"type": "shell",
+			"command": "uv sync --all-extras --dev",
+			"group": "build"
+		},
+		{
+			"label": "ci:check",
+			"type": "shell",
+			"command": "echo CI checks complete",
+			"group": "test",
+			"dependsOn": [
+				"format:check",
+				"lint:check",
+				"typecheck",
+				"test:coverage"
+			],
+			"dependsOrder": "sequence"
+		},
+		{
+			"label": "security:safety",
+			"type": "shell",
+			"command": "uv run safety check",
+			"group": "test"
+		},
+		{
+			"label": "security:bandit",
+			"type": "shell",
+			"command": "uv run bandit -r src/cql_flow",
+			"group": "test"
+		},
+		{
+			"label": "security:scan",
+			"type": "shell",
+			"command": "echo security scans complete",
+			"group": "test",
+			"dependsOn": [
+				"security:safety",
+				"security:bandit"
+			],
+			"dependsOrder": "sequence"
+		},
+		{
+			"label": "performance:test",
+			"type": "shell",
+			"command": "uv run pytest tests/performance/ -v",
+			"group": "test"
+		},
+		{
+			"label": "docs:build",
+			"type": "shell",
+			"command": "uv run sphinx-build -b html docs docs/_build/html",
+			"group": "build"
+		},
+		{
+			"label": "docs:serve",
+			"type": "shell",
+			"command": "uv run python -m http.server -d docs/_build/html 8000",
+			"group": "build",
+			"isBackground": true
+		}
+	]
+}

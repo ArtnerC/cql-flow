@@ -1,0 +1,148 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., v1.0.0)'
+        required: true
+        type: string
+
+env:
+  UV_CACHE_DIR: /tmp/.uv-cache
+
+jobs:
+  validate-release:
+    name: Validate Release
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+        
+    - name: Set up Python
+      run: uv python install 3.12
+      
+    - name: Install dependencies
+      run: uv sync --all-extras --dev
+      
+    - name: Run full test suite
+      run: uv run pytest tests --cov=src/cql_flow -v
+      
+    - name: Validate package can be built
+      run: uv build
+      
+    - name: Check package contents
+      run: |
+        uv run twine check dist/*
+        echo "Package validation completed successfully"
+
+  build-and-publish:
+    name: Build and Publish
+    needs: validate-release
+    runs-on: ubuntu-latest
+    environment: release
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+        
+    - name: Set up Python
+      run: uv python install 3.12
+      
+    - name: Install dependencies
+      run: uv sync --all-extras --dev
+      
+    - name: Build package
+      run: uv build
+      
+    - name: Publish to PyPI
+      if: startsWith(github.ref, 'refs/tags/v')
+      run: uv publish
+      env:
+        UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: distribution-packages
+        path: dist/
+
+  create-github-release:
+    name: Create GitHub Release
+    needs: build-and-publish
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch all history for changelog generation
+        
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: distribution-packages
+        path: dist/
+        
+    - name: Generate changelog
+      id: changelog
+      run: |
+        # Simple changelog generation from git log
+        PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+        if [ -n "$PREVIOUS_TAG" ]; then
+          CHANGELOG=$(git log --pretty=format:"* %s (%h)" $PREVIOUS_TAG..HEAD | head -20)
+        else
+          CHANGELOG=$(git log --pretty=format:"* %s (%h)" --max-count=20)
+        fi
+        
+        echo "changelog<<EOF" >> $GITHUB_OUTPUT
+        echo "## Changes" >> $GITHUB_OUTPUT
+        echo "$CHANGELOG" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+        
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
+        body: |
+          # CQL to ELM Converter ${{ github.ref_name }}
+          
+          ${{ steps.changelog.outputs.changelog }}
+          
+          ## Installation
+          
+          ```bash
+          pip install elm-flow==${{ github.ref_name }}
+          ```
+          
+          ## Verification
+          
+          ```bash
+          elm-flow --version
+          ```
+          
+        files: |
+          dist/*
+        draft: false
+        prerelease: false
+        
+    - name: Update package managers
+      run: |
+        # Future: Add notifications to package manager communities
+        echo "Release ${{ github.ref_name }} published successfully!"
+        echo "PyPI: https://pypi.org/project/elm-flow/${{ github.ref_name }}/"

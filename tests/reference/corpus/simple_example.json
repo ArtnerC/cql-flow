@@ -1,0 +1,49 @@
+{
+    "library": {
+        "identifier": {
+            "id": "SimpleExample",
+            "version": "1.0.0"
+        },
+        "schemaIdentifier": {
+            "id": "urn:hl7-org:elm",
+            "version": "r1"
+        },
+        "usings": {
+            "def": [
+                {
+                    "localIdentifier": "System",
+                    "uri": "urn:hl7-org:elm-types:r1"
+                },
+                {
+                    "localIdentifier": "FHIR",
+                    "uri": "http://hl7.org/fhir",
+                    "version": "4.0.1"
+                }
+            ]
+        },
+        "statements": {
+            "def": [
+                {
+                    "name": "Patient",
+                    "context": "Patient"
+                },
+                {
+                    "name": "Hello",
+                    "context": "Patient",
+                    "expression": {
+                        "valueType": "{urn:hl7-org:elm-types:r1}String",
+                        "value": "World",
+                        "type": "Literal"
+                    }
+                },
+                {
+                    "name": "CurrentDate",
+                    "context": "Patient",
+                    "expression": {
+                        "type": "Today"
+                    }
+                }
+            ]
+        }
+    }
+}

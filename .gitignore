@@ -1,0 +1,33 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Test and coverage artifacts
+.pytest_cache/
+.hypothesis/
+coverage.xml
+.coverage
+htmlcov/
+
+# Local debug and scratch files
+debug_*.py
+
+# Docs build artifacts
+docs/_build/
+_build/
+
+# OS/editor caches
+.DS_Store
+Thumbs.db
+.vscode/*
+# Allow key workspace configs
+!.vscode/tasks.json
+!.vscode/settings.json
+!.vscode/extensions.json

@@ -1,0 +1,279 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run daily at 3 AM UTC to catch dependency issues
+    - cron: '0 3 * * *'
+
+env:
+  UV_CACHE_DIR: /tmp/.uv-cache
+
+jobs:
+  lint-and-format:
+    name: Lint and Format Check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+        
+    - name: Set up Python
+      run: uv python install 3.12
+      
+    - name: Install dependencies
+      run: uv sync --all-extras --dev
+      
+    - name: Check formatting with ruff
+      run: uv run ruff format --check .
+      
+    - name: Lint with ruff
+      run: uv run ruff check .
+      
+    - name: Type check with mypy
+      run: uv run mypy src/cql_flow tests
+      continue-on-error: true  # Don't fail CI on type errors initially
+
+  test:
+    name: Test Suite
+    needs: lint-and-format
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.11', '3.12', '3.13']
+        exclude:
+          # Reduce matrix size - test main versions on all OS, others on Ubuntu only
+          - os: windows-latest
+            python-version: '3.11'
+          - os: windows-latest
+            python-version: '3.13'
+          - os: macos-latest
+            python-version: '3.11'
+          - os: macos-latest
+            python-version: '3.13'
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+        
+    - name: Set up Python ${{ matrix.python-version }}
+      run: uv python install ${{ matrix.python-version }}
+      
+    - name: Install dependencies
+      run: uv sync --all-extras --dev
+      
+    - name: Run tests with coverage
+      run: uv run pytest tests --cov=src/cql_flow --cov-report=xml --cov-report=term-missing -v
+      
+    - name: Upload coverage to Codecov
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.12'
+      uses: codecov/codecov-action@v4
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+  test-performance:
+    name: Performance Tests
+    needs: lint-and-format
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+        
+    - name: Set up Python
+      run: uv python install 3.12
+      
+    - name: Install dependencies
+      run: uv sync --all-extras --dev
+      
+    - name: Run performance tests
+      run: uv run pytest tests/performance/ -v --tb=short
+      
+    - name: Store benchmark results
+      uses: benchmark-action/github-action-benchmark@v1
+      if: github.ref == 'refs/heads/main'
+      with:
+        tool: 'pytest'
+        output-file-path: benchmark_results.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        auto-push: true
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+        
+    - name: Set up Python
+      run: uv python install 3.12
+      
+    - name: Install dependencies
+      run: uv sync --all-extras --dev
+      
+    - name: Run safety check
+      run: uv run safety check
+      continue-on-error: true  # Don't fail CI on security warnings initially
+      
+    - name: Run bandit security scan
+      run: uv run bandit -r src/cql_flow -f json -o bandit-report.json
+      continue-on-error: true
+      
+    - name: Upload bandit report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: bandit-security-report
+        path: bandit-report.json
+
+  integration-tests:
+    name: Integration Tests
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+        
+    - name: Set up Python
+      run: uv python install 3.12
+      
+    - name: Install dependencies
+      run: uv sync --all-extras --dev
+      
+    - name: Run integration tests
+      run: uv run pytest tests/integration/ -v --tb=short
+      
+    - name: Test CLI functionality
+      run: |
+        # Test CLI commands don't crash
+        uv run elm-flow --help
+        uv run elm-flow convert --help
+        uv run elm-flow validate --help
+        uv run elm-flow batch --help
+        
+    - name: Test package installation
+      run: |
+        # Test that package can be built and installed
+        uv build
+        ls -la dist/
+
+  compatibility-check:
+    name: Dependency Compatibility
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        enable-cache: true
+        
+    - name: Set up Python
+      run: uv python install 3.12
+      
+    - name: Check for dependency conflicts
+      run: uv sync --all-extras --dev
+      
+    - name: Validate uv.lock is up to date
+      run: |
+        uv lock --check
+        git diff --exit-code uv.lock || (echo "uv.lock is not up to date" && exit 1)
+
+  docs-build:
+    name: Documentation Build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+        
+    - name: Set up Python
+      run: uv python install 3.12
+      
+    - name: Install dependencies
+      run: uv sync --all-extras --dev
+      
+    - name: Build documentation
+      run: |
+        # For now, just validate that docstrings are properly formatted
+        uv run python -m pydoc src.cql_flow > /dev/null
+        echo "Documentation validation passed"
+        
+    - name: Check README
+      run: |
+        # Validate README has basic content
+        test -f README.md
+        grep -q "CQL to ELM Converter" README.md
+        echo "README validation passed"
+
+  # Summary job that all branch protection rules should target
+  ci-success:
+    name: CI Pipeline Success
+    runs-on: ubuntu-latest
+    needs: 
+      - lint-and-format
+      - test
+      - test-performance
+      - security-scan
+      - integration-tests
+      - compatibility-check
+      - docs-build
+    if: always()
+    
+    steps:
+    - name: Check all jobs succeeded
+      if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+      run: |
+        echo "One or more CI jobs failed:"
+        echo "lint-and-format: ${{ needs.lint-and-format.result }}"
+        echo "test: ${{ needs.test.result }}"
+        echo "test-performance: ${{ needs.test-performance.result }}"
+        echo "security-scan: ${{ needs.security-scan.result }}"
+        echo "integration-tests: ${{ needs.integration-tests.result }}"
+        echo "compatibility-check: ${{ needs.compatibility-check.result }}"
+        echo "docs-build: ${{ needs.docs-build.result }}"
+        exit 1
+        
+    - name: Success
+      run: echo "All CI jobs completed successfully!"

@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "ms-python.vscode-pylance",
+        "LittleFoxTeam.vscode-python-test-adapter"
+    ]
+}

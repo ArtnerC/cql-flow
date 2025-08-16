@@ -1,0 +1,4 @@
+# file: C:\Users\Artne\Dev\elm-flow\src\elm_flow\generator\expression_converter.py
+# hypothesis_version: 6.137.1
+
+['Boolean', 'Decimal', 'Integer', 'Null', 'String', 'false', 'name', 'true']

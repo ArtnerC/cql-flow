@@ -1,0 +1,4 @@
+# file: C:\Users\Artne\Dev\elm-flow\src\elm_flow\models\cql\expressions.py
+# hypothesis_version: 6.137.1
+
+['AliasedQuerySource', 'CQLExpressionVisitor', 'CaseItem', 'SortByItem', 'SortClause', 'TupleElement', 'asc', 'day', 'second']

@@ -1,0 +1,4 @@
+# file: C:\Users\Artne\Dev\elm-flow\src\elm_flow\validator\scope_manager.py
+# hypothesis_version: 6.136.6
+
+[' -> ', 'let', 'query']

@@ -1,0 +1,4 @@
+# file: C:\Users\Artne\Dev\elm-flow\src\elm_flow\validator\semantic_validator.py
+# hypothesis_version: 6.136.6
+
+['.', 'CLINICAL_MODEL', 'EMPTY_EXPRESSION', 'INVALID_LIBRARY_NAME', 'MISSING_LIBRARY_NAME', 'SCOPE_VALIDATION', 'SYMBOL_RESOLUTION', 'TYPE_COMPATIBILITY', 'TYPE_INFERENCE', 'Validation passed', '__expression__', 'error', 'hint', 'info', 'version', 'warning']

@@ -1,0 +1,28 @@
+         12741 function calls (12737 primitive calls) in 0.004 seconds
+
+   Ordered by: cumulative time
+   List reduced from 171 to 20 due to restriction <20>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.004    0.004 C:\Users\Artne\Dev\elm-flow\src\cql_flow\api\converter.py:321(convert_library)
+        1    0.000    0.000    0.004    0.004 C:\Users\Artne\Dev\elm-flow\src\cql_flow\generator\elm_builder.py:97(generate_elm)
+        1    0.000    0.000    0.003    0.003 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py:1570(exception)
+        1    0.000    0.000    0.003    0.003 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py:1558(error)
+        1    0.000    0.000    0.003    0.003 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py:1660(_log)
+        1    0.000    0.000    0.003    0.003 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py:1686(handle)
+        1    0.000    0.000    0.003    0.003 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py:1746(callHandlers)
+        1    0.000    0.000    0.003    0.003 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py:1011(handle)
+        1    0.000    0.000    0.003    0.003 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py:1148(emit)
+        1    0.000    0.000    0.003    0.003 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py:988(format)
+        1    0.000    0.000    0.003    0.003 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py:690(format)
+        1    0.000    0.000    0.003    0.003 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py:649(formatException)
+        1    0.000    0.000    0.003    0.003 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\traceback.py:111(print_exception)
+        1    0.000    0.000    0.003    0.003 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\traceback.py:718(__init__)
+        1    0.000    0.000    0.002    0.002 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\traceback.py:1067(_compute_suggestion_error)
+       81    0.001    0.000    0.002    0.000 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\traceback.py:1129(_levenshtein_distance)
+        2    0.000    0.000    0.001    0.001 C:\Users\Artne\Dev\elm-flow\src\cql_flow\validator\semantic_validator.py:43(validate_library)
+        2    0.000    0.000    0.001    0.000 C:\Users\Artne\Dev\elm-flow\src\cql_flow\validator\rules\__init__.py:237(validate)
+     1559    0.000    0.000    0.001    0.000 C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.12_3.12.2800.0_x64__qbz5n2kfra8p0\Lib\traceback.py:1059(_substitution_cost)
+        2    0.000    0.000    0.001    0.000 C:\Users\Artne\Dev\elm-flow\src\cql_flow\validator\rules\scope_rules.py:215(validate)
+
+

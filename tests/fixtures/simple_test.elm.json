@@ -1,0 +1,24 @@
+{
+  "library": {
+    "identifier": {
+      "id": "SimpleTest",
+      "version": "1.0.0"
+    },
+    "schemaIdentifier": {
+      "id": "urn:hl7-org:elm",
+      "version": "r1"
+    },
+    "usings": {
+      "def": [
+        {
+          "localIdentifier": "FHIR",
+          "uri": "http://hl7.org/fhir",
+          "version": "4.0.1"
+        }
+      ]
+    },
+    "statements": {
+      "def": []
+    }
+  }
+}
