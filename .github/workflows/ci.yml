@@ -110,16 +110,34 @@ jobs:
       run: uv sync --all-extras --dev
       
     - name: Run performance tests
-      run: uv run pytest tests/performance/ -v --tb=short
+      run: |
+        echo "Working directory: $(pwd)"
+        uv run pytest tests/performance/ -v --tb=short --benchmark-json=benchmark_results.json --no-cov
+        echo "Exit code: $?"
+      
+    - name: Check benchmark results file
+      run: |
+        ls -la benchmark_results.json || echo "benchmark_results.json not found"
+        if [ -f benchmark_results.json ]; then
+          echo "✓ benchmark_results.json exists"
+          echo "File size: $(wc -c < benchmark_results.json) bytes"
+          echo "First 200 characters:"
+          head -c 200 benchmark_results.json
+        else
+          echo "✗ benchmark_results.json does not exist"
+          echo "Files in current directory:"
+          ls -la
+        fi
       
     - name: Store benchmark results
       uses: benchmark-action/github-action-benchmark@v1
-      if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/main' && hashFiles('benchmark_results.json') != ''
       with:
         tool: 'pytest'
         output-file-path: benchmark_results.json
         github-token: ${{ secrets.GITHUB_TOKEN }}
         auto-push: true
+        fail-on-alert: false
 
   security-scan:
     name: Security Scan
