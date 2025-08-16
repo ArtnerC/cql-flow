@@ -181,10 +181,10 @@ jobs:
     - name: Test CLI functionality
       run: |
         # Test CLI commands don't crash
-        uv run elm-flow --help
-        uv run elm-flow convert --help
-        uv run elm-flow validate --help
-        uv run elm-flow batch --help
+        uv run cql-flow --help
+        uv run cql-flow convert --help
+        uv run cql-flow validate --help
+        uv run cql-flow batch --help
         
     - name: Test package installation
       run: |

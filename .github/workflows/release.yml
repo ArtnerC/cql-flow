@@ -127,13 +127,13 @@ jobs:
           ## Installation
           
           ```bash
-          pip install elm-flow==${{ github.ref_name }}
+          pip install cql-flow==${{ github.ref_name }}
           ```
           
           ## Verification
           
           ```bash
-          elm-flow --version
+          cql-flow --version
           ```
           
         files: |
@@ -145,4 +145,4 @@ jobs:
       run: |
         # Future: Add notifications to package manager communities
         echo "Release ${{ github.ref_name }} published successfully!"
-        echo "PyPI: https://pypi.org/project/elm-flow/${{ github.ref_name }}/"
+        echo "PyPI: https://pypi.org/project/cql-flow/${{ github.ref_name }}/"
