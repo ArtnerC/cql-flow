@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     # NOTE: Pin due to 4.13.2 Python runtime regression (EpsilonTransition.followState error)
-    "antlr4-python3-runtime==4.13.1",
+    "antlr4-python3-runtime==4.13.2",
     "jsonschema>=4.21.1",
     "pydantic>=2.6.1",
     "orjson>=3.9.12",
