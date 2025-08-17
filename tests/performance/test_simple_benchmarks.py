@@ -67,3 +67,29 @@ class TestSimpleBenchmarks:
 
         result = benchmark(init_converter)
         assert result is not None
+
+    def test_basic_json_functionality(self):
+        """Test that JSON operations work - this should always pass."""
+        import json
+        import tempfile
+        
+        # Test JSON creation and parsing
+        test_data = {"benchmarks": [{"name": "test", "value": 123.45}]}
+        json_str = json.dumps(test_data)
+        parsed_data = json.loads(json_str)
+        
+        assert parsed_data == test_data
+        
+        # Test file operations
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            json.dump(test_data, f)
+            temp_path = f.name
+            
+        with open(temp_path, 'r') as f:
+            loaded_data = json.load(f)
+            
+        assert loaded_data == test_data
+        
+        # Cleanup
+        import os
+        os.unlink(temp_path)

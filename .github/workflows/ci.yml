@@ -166,8 +166,23 @@ jobs:
         # Store benchmark results in gh-pages branch
         gh-pages-branch: gh-pages
         benchmark-data-dir-path: benchmarks
-        # Add error handling
+        # Don't fail if gh-pages doesn't exist yet
+        skip-fetch-gh-pages: false
       continue-on-error: true
+      
+    - name: Debug benchmark action failure
+      if: failure() && github.ref == 'refs/heads/main'
+      run: |
+        echo "Benchmark action failed. Debugging information:"
+        echo "GitHub ref: ${{ github.ref }}"
+        echo "Benchmark file exists: $(test -f benchmark_results.json && echo 'YES' || echo 'NO')"
+        if [ -f benchmark_results.json ]; then
+          echo "Benchmark file size: $(wc -c < benchmark_results.json) bytes"
+          echo "Benchmark file content:"
+          cat benchmark_results.json
+        fi
+        echo "Available branches:"
+        git branch -r || echo "Failed to list remote branches"
       
     - name: Upload benchmark results as artifact
       if: always() && hashFiles('benchmark_results.json') != ''
