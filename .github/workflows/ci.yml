@@ -93,6 +93,8 @@ jobs:
     name: Performance Tests
     needs: lint-and-format
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Required for benchmark-action to push benchmark data
     
     steps:
     - uses: actions/checkout@v4
