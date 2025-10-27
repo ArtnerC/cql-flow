@@ -76,7 +76,7 @@ jobs:
         UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: distribution-packages
         path: dist/
