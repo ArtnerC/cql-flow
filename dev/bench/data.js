@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1777868260051,
+  "lastUpdate": 1777953825749,
   "repoUrl": "https://github.com/ArtnerC/cql-flow",
   "entries": {
     "Benchmark": [
@@ -32770,6 +32770,133 @@ window.BENCHMARK_DATA = {
             "unit": "iter/sec",
             "range": "stddev: 0.00006047011359532744",
             "extra": "mean: 1.3221139175050474 msec\nrounds: 497"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]",
+            "email": "49699333+dependabot[bot]@users.noreply.github.com"
+          },
+          "committer": {
+            "name": "GitHub",
+            "username": "web-flow",
+            "email": "noreply@github.com"
+          },
+          "id": "949bbe1d65724924eb6b3e2422ddb3b843b1f29f",
+          "message": "ci(deps): bump actions/download-artifact from 4 to 5 (#8)\n\nBumps [actions/download-artifact](https://github.com/actions/download-artifact) from 4 to 5.\n- [Release notes](https://github.com/actions/download-artifact/releases)\n- [Commits](https://github.com/actions/download-artifact/compare/v4...v5)\n\n---\nupdated-dependencies:\n- dependency-name: actions/download-artifact\n  dependency-version: '5'\n  dependency-type: direct:production\n  update-type: version-update:semver-major\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2025-08-29T19:24:28Z",
+          "url": "https://github.com/ArtnerC/cql-flow/commit/949bbe1d65724924eb6b3e2422ddb3b843b1f29f"
+        },
+        "date": 1777953824601,
+        "tool": "pytest",
+        "benches": [
+          {
+            "name": "tests/performance/test_benchmarks.py::TestConversionPerformance::test_simple_library_conversion_speed",
+            "value": 26353.701817115325,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00001704511289338414",
+            "extra": "mean: 37.94533333266119 usec\nrounds: 45"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestConversionPerformance::test_complex_library_conversion_speed",
+            "value": 3400.634006159353,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0003011515733438724",
+            "extra": "mean: 294.0628124604892 usec\nrounds: 3162"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestConversionPerformance::test_batch_conversion_performance",
+            "value": 1950.8058404547148,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0004582869776780201",
+            "extra": "mean: 512.6086765082215 usec\nrounds: 1558"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestConversionPerformance::test_validation_performance_impact",
+            "value": 7874.119082947891,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000015051183705796112",
+            "extra": "mean: 126.99833333300602 usec\nrounds: 5"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestConversionPerformance::test_type_inference_performance",
+            "value": 5862.979054882077,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000014345909405729807",
+            "extra": "mean: 170.561755489695 usec\nrounds: 3370"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestConversionPerformance::test_elm_generation_performance",
+            "value": 31468.42275950004,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000007822122803642981",
+            "extra": "mean: 31.77788755548954 usec\nrounds: 12833"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestScalabilityBenchmarks::test_expression_scaling[10]",
+            "value": 13536.896956111146,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000011164107438633431",
+            "extra": "mean: 73.87217345615949 usec\nrounds: 8469"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestScalabilityBenchmarks::test_expression_scaling[50]",
+            "value": 3765.6834847252144,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000014434423813876777",
+            "extra": "mean: 265.55604156756976 usec\nrounds: 2526"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestScalabilityBenchmarks::test_expression_scaling[100]",
+            "value": 1964.25500946724,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000021358276262731242",
+            "extra": "mean: 509.0988670922252 usec\nrounds: 1723"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestScalabilityBenchmarks::test_expression_scaling[200]",
+            "value": 1004.7625525558599,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00006819783959832516",
+            "extra": "mean: 995.2600218392444 usec\nrounds: 870"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestScalabilityBenchmarks::test_nesting_complexity_scaling[1]",
+            "value": 34583.253824583444,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000010217818896314922",
+            "extra": "mean: 28.915729129257116 usec\nrounds: 16159"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestScalabilityBenchmarks::test_nesting_complexity_scaling[3]",
+            "value": 24738.474335157418,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000010676547970567568",
+            "extra": "mean: 40.42286466222521 usec\nrounds: 13736"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestScalabilityBenchmarks::test_nesting_complexity_scaling[5]",
+            "value": 19154.238350980653,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000175349414630237",
+            "extra": "mean: 52.20776632701776 usec\nrounds: 11974"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestScalabilityBenchmarks::test_nesting_complexity_scaling[8]",
+            "value": 15550.49225488985,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000010933912133644084",
+            "extra": "mean: 64.30664596392762 usec\nrounds: 10047"
+          },
+          {
+            "name": "tests/performance/test_benchmarks.py::TestScalabilityBenchmarks::test_concurrent_conversion_performance",
+            "value": 652.2835038045499,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00006673403377227368",
+            "extra": "mean: 1.5330757165670095 msec\nrounds: 501"
           }
         ]
       }
